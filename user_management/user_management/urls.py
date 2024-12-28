@@ -16,9 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
+from django.urls import re_path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('users.urls')),
+    re_path(r'^oauth/', include('social_django.urls', namespace='social')),
     
 ]

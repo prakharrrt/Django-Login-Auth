@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users',
+    'social_django'
 ]
 
 MIDDLEWARE = [
@@ -63,6 +64,17 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+
+#The Problem:
+# If there's some data you need to include in every single template (like the current year, logged-in user info, or site-wide settings), adding that data to every view manually can be repetitive, tedious, and prone to errors.
+
+# The Solution:
+# Context processors solve this problem. They are like helpers that automatically add specific data to the context of every template. You write the logic once in a context processor, and Django automatically makes that data available to all your templates.
+
+                 # Added the following two
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -101,6 +113,13 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.github.GithubOAuth2',
+    'social_core.backends.google.GoogleOAuth2',
+
+    'django.contrib.auth.backends.ModelBackend',
+)
+
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
@@ -126,3 +145,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 SESSION_COOKIE_AGE= 30*24*60*60
 LOGIN_REDIRECT_URL= '/'
 LOGIN_URL= 'login'
+
+
+# social auth configs for github
+SOCIAL_AUTH_GITHUB_KEY = 'Iv23liOjPJgGpXhHl1YD'
+SOCIAL_AUTH_GITHUB_SECRET = '602a294962e18f2adaf69e6e19b3984b651708f8'
+
+# social auth configs for google
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '521863134549-4rhi26dn412c6vcf80l4oetooup5mgct.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
