@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
+load_dotenv()  # loads the configs from .env
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -147,10 +150,12 @@ LOGIN_REDIRECT_URL= '/'
 LOGIN_URL= 'login'
 
 
+import os
 # social auth configs for github
-SOCIAL_AUTH_GITHUB_KEY = 'Iv23liOjPJgGpXhHl1YD'
-SOCIAL_AUTH_GITHUB_SECRET = '602a294962e18f2adaf69e6e19b3984b651708f8'
+SOCIAL_AUTH_GITHUB_KEY = str(os.getenv('GITHUB_KEY'))
+SOCIAL_AUTH_GITHUB_SECRET = str(os.getenv('GITHUB_SECRET'))
 
 # social auth configs for google
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '521863134549-4rhi26dn412c6vcf80l4oetooup5mgct.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = str(os.getenv('GOOGLE_KEY'))
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = str(os.getenv('GOOGLE_SECRET'))
+
