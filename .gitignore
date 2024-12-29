@@ -1,3 +1,4 @@
 env
 gitignore
 .env
+user_management\db.sqlite3
