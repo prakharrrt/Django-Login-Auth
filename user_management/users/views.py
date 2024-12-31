@@ -2,7 +2,9 @@ from django.shortcuts import render,redirect
 from django.contrib import messages
 from django.views import View
 from django.contrib.auth.views import LoginView
-
+from django.urls import reverse_lazy
+from django.contrib.auth.views import PasswordResetView
+from django.contrib.messages.views import SuccessMessageMixin
 from .forms import RegisterForm, LoginForm
 
 # Create your views here.
@@ -81,7 +83,26 @@ class CustomLoginView(LoginView):
             self.request.session.modified = True
 
         return super(CustomLoginView,self).form_valid(form)
-        
-            
 
 
+class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
+    template_name = 'users/password_reset.html'
+
+
+    email_template_name = 'users/password-reset-email.html'
+    # The template used for generating the body of the email with the reset password link
+
+    subject_template_name = 'users/password_reset_subject.txt'
+    # The template used for generating the subject of the email with the reset password link
+
+
+    success_message = "We've emailed you instructions for setting your password, " \
+                      "if an account exists with the email you entered. You should receive them shortly." \
+                      " If you don't receive an email, " \
+                      "please make sure you've entered the address you registered with, and check your spam folder."
+    # The message that will be displayed upon a successful password reset request
+
+
+    success_url = reverse_lazy('home')
+    # If not given any, django defaults to 'password_reset_done' after a successful password request. 
+    # But I think it makes sense to just redirect the user to the home page without providing any additional template.
