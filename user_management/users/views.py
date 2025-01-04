@@ -6,6 +6,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.views import PasswordResetView
 from django.contrib.messages.views import SuccessMessageMixin
 from .forms import RegisterForm, LoginForm
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -106,3 +107,11 @@ class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
     success_url = reverse_lazy('home')
     # If not given any, django defaults to 'password_reset_done' after a successful password request. 
     # But I think it makes sense to just redirect the user to the home page without providing any additional template.
+
+
+@login_required
+def profile(request):
+    return render(request, 'users/profile.html')
+# The login_required decorator limits access to logged in users
+# a user who isnt authenticated, tries to hit, the login_required redirects it to settings.LOGIN_URL, and then would go directly
+# to the page (profile page) after authentication

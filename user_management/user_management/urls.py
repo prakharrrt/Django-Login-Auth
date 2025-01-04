@@ -26,18 +26,7 @@ urlpatterns = [
     re_path(r'^oauth/', include('social_django.urls', namespace='social')),
     # the regex matches any path that starts with oauth
 
-    path('password-reset', ResetPasswordView.as_view(), name='password_reset'),
-    # matches urls for password-reset
 
-    path('password-reset-confirm/<uidb64>/<token>/',
-         auth_views.PasswordResetConfirmView.as_view(template_name='users/password_reset_confirm.html'),
-         name='password_reset_confirm'),
-    # matches for urls such as {{ protocol }}://{{ domain }}{% url 'password_reset_confirm' uidb64=uid token=token %}
-
-
-    path('password-reset-complete/',
-         auth_views.PasswordResetCompleteView.as_view(template_name='users/password_reset_complete.html'),
-         name='password_reset_complete'),
 
          
 
