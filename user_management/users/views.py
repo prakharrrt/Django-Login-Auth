@@ -5,7 +5,7 @@ from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
 from django.contrib.auth.views import PasswordResetView
 from django.contrib.messages.views import SuccessMessageMixin
-from .forms import RegisterForm, LoginForm
+from .forms import RegisterForm, LoginForm, UpdateProfileForm, UpdateUserForm
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
@@ -111,7 +111,20 @@ class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
 
 @login_required
 def profile(request):
-    return render(request, 'users/profile.html')
-# The login_required decorator limits access to logged in users
-# a user who isnt authenticated, tries to hit, the login_required redirects it to settings.LOGIN_URL, and then would go directly
-# to the page (profile page) after authentication
+    if request.method=='POST':
+        user_form = UpdateUserForm(request.POST, instance=request.user)
+        profile_form = UpdateProfileForm(request.POST, request.FILES, instance=request.user.profile)
+        
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request,'Your profile is updated successfully')
+            return redirect(to='users-profile')
+        
+    else:
+        user_form = UpdateUserForm(instance=request.user)
+        profile_form = UpdateProfileForm(instance= request.user.profile)
+
+
+    return render(request, 'users/profile.html', {'user_form': user_form, 'profile_form': profile_form})
+
