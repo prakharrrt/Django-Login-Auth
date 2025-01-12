@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.views import View
 from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
-from django.contrib.auth.views import PasswordResetView
+from django.contrib.auth.views import PasswordResetView, PasswordChangeView
 from django.contrib.messages.views import SuccessMessageMixin
 from .forms import RegisterForm, LoginForm, UpdateProfileForm, UpdateUserForm
 from django.contrib.auth.decorators import login_required
@@ -128,3 +128,7 @@ def profile(request):
 
     return render(request, 'users/profile.html', {'user_form': user_form, 'profile_form': profile_form})
 
+class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
+    template_name='users/change_password.html'
+    success_message = "Successfully Changed Your Password"
+    success_url = reverse_lazy('home')
